@@ -1,8 +1,26 @@
+;;; epe.el --- An emacs plasmid editor.
+;;
+;; Copyright (c) 2023 Ashton Trey Belew
+;;
+;; Author: Ashton Trey Belew <abelew@gmail.com> and Aaron S. Hawley <aaron.s.hawley@gmail.com>
+;; Homepage: nil
+;; URL: nil
+;; Version: 202401
+;; Last-Updated: 202401
+;; Keywords: Biology
+;;
+;; GPLv3
+;;
+;;; Commentary:
+;;  Thank you Aaron for the changes for byte compilation!
 
-;; According to my browser's console, the reb_get.pl request is a POST
-;; with form data:
-;; searchkey: "BglII", x: "52" y: "13", searchcat: "enzyme+name+or+number"
+
+(eval-when-compile (require 'cl-lib))
 (require 'dash)
+(require 'dom)
+(eval-when-compile
+  (require 'subr-x)) ; string-join, string-empty-p
+
 (defun get-rebase-cutsite (enzyme)
   "Download the information about a restriction enzyme from rebase.neb.com."
   (interactive "sRestriction enzyme:")

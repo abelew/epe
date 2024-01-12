@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2023 Ashton Trey Belew
 ;;
-;; Author: Ashton Trey Belew <abelew@gmail.com>
+;; Author: Ashton Trey Belew <abelew@gmail.com> and Aaron S. Hawley <aaron.s.hawley@gmail.com>
 ;; Homepage: nil
 ;; URL: nil
 ;; Version: 202312
@@ -12,6 +12,8 @@
 ;; GPLv3
 ;;
 ;;; Commentary:
+;;
+;; Thank you Aaron for the changes for byte compilation!
 ;;
 ;; Quickstart
 ;;
@@ -39,10 +41,15 @@
 ;; as well as fasta-mode.el:
 ;; https://github.com/vaiteaopuu/emacs-fasta-mode
 
+
 ;;; Code:
 ;;
 
 ;;; customizable variables
+
+(require 'dom)
+(eval-when-compile
+  (require 'subr-x)) ; string-join, string-empty-p
 
 ;;;###autoload
 (defgroup epe nil
@@ -53,17 +60,22 @@
   :prefix "epe-"
   :group 'convenience)
 
+
 (defcustom epe-less-feedback nil
   "Give less echo area feedback."
   :type 'boolean
   :group 'epe)
 
+
 ;;; variables
+
 
 (defvar epe-mode nil
   "Mode variable for `epe-mode'.")
 
+
 ;;; keymaps
+
 
 (defvar epe-mode-map
   (let ((map (make-sparse-keymap)))
@@ -71,7 +83,9 @@
     map)
   "Keymap for `epe-mode' minor-mode.")
 
+
 ;;; utility functions
+
 
 ;;;###autoload
 (defun epe-make-fasta (subseq name)
@@ -90,6 +104,7 @@
       (insert fasta-header)
       (insert merged-subseq)
       (insert "\n"))))
+
 
 ;; Taken pretty much verbatim from:
 ;; https://emacs.stackexchange.com/questions/36200/split-line-every-n-characters
@@ -111,7 +126,9 @@
         (t (cons (substring subseq 0 chars)
                  (epe-split-sequence (substring subseq chars) chars)))))
 
+
 ;;; minor-mode definition
+
 
 ;;;###autoload
 (define-minor-mode epe-mode
@@ -119,7 +136,9 @@
   :group 'epe
   :global t)
 
+
 ;;; interactive commands
+
 
 ;; Taken directly from:
 ;; https://github.com/vaiteaopuu/emacs-fasta-mode/blob/master/fasta-mode.el
@@ -153,6 +172,7 @@
     (kill-new selected-seq)
     selected-seq))
 
+
 ;; This adds a little logic to epe-get-fasta in order to remove the header.
 ;;;###autoload
 (defun epe-get-fasta-seq ()
@@ -170,6 +190,7 @@
          (without-newlines (replace-regexp-in-string "\n" "" without-header)))
     (kill-new without-newlines)
     without-newlines))
+
 
 ;;;###autoload
 (defun epe-make-revcomp-fasta ()
@@ -225,11 +246,14 @@
     (kill-new translated)
     translated))
 
+
 (defun epe-revcomp-entire ()
   "Not yet implemented: reverse complement every sequence in a file."
   )
 
+
 (provide 'epe)
+
 
 ;;
 ;; Emacs
