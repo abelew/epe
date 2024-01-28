@@ -153,7 +153,7 @@
 It will look like class (inherited classes) mass=atomic-mass"
   (format "%s %s: mass=%s"
           (eieio-object-name x)
-          (mapcar 'eieio-class-name (eieio-class-parents (eieio-object-class x)))
+          (eieio-object-class x)
           (or (get-molecule-mass x) "unknown")))
 
 (cl-defmethod molecule-search ((x molecule))
